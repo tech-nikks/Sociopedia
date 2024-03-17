@@ -9,6 +9,7 @@ import path from 'path';
 
 import multer from 'multer';
 import { fileURLToPath } from 'url';
+import { register } from './controllers/auth.js';
 
 
 /* Configurations */
@@ -37,3 +38,21 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+
+/*Routes with files */
+app.post("/auth/register", upload.single('picture'), register );
+
+
+
+
+
+
+
+
+
+
+/*Mongoose connection*/
+const PORT = process.env.PORT || 6001;
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => app.listen(PORT, () => console.log(`Server running on port: ${PORT}`)))
+    .catch((error) => console.log(error.message));
